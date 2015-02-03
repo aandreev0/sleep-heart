@@ -1,11 +1,11 @@
 % build trace from first to last image
 
-time_points = 0:10:273; % filenames: 0:(tn-1)
+time_points = 0:5:273; % filenames: 0:(tn-1)
 radius = 20;
 ref_positions1 = []; % [x0 y0;x1 y1...]
 ref_positions2 = []; % [x0 y0;x1 y1...]
 'Select fish heart and follow it'
-folder_name = 'Pos0/';
+%folder_name = 'Pos0/';
 for i = 1:length(time_points)
     time_id = time_points(i);
     filename = ['img_', sprintf('%09d', time_id) ,'_Default_', sprintf('%03d', 0) ,'.tif'];

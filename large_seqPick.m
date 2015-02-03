@@ -2,11 +2,11 @@
 %save workspace here:
 ws_file_name = 'SecondDay_3Fish_10Tstep';
 
-n_fish = 4;
+n_fish = 6;
 fps = 10;
-radius = 12; % ROI heart radius
+radius = 8; % ROI heart radius
 cmap = jet;
-folder_name = 'Pos0/';
+folder_name = '../Pos0/';
 %time_points = (0:20); % physical file behind that
 burst_size = 600;
 % file names: img_(time)_Default_(3, burst_position).tif
