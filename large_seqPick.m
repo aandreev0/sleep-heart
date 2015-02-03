@@ -63,7 +63,7 @@ for time_i = 1:length(time_points)
             xy = [heart_coordinates(f, 2), heart_coordinates(f, 1)];
             timelapse_data((time_i-1)*burst_size+j+1, f) = get_avg_signal(xy, img, radius);
         end
-        if rand > 0.999
+        if rand > 0.9995
             toc
         end
     end % for j = 1:burst_size-1
