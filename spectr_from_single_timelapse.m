@@ -1,14 +1,10 @@
-
 sample_i = 0;
 
-sample_ps = 1:274;
+sample_ps = 1:1;
 fps_per_time = 10;
 
 intensity_raw = [intensity; intensity(end,:)];
-
-
 fcmap = jet(length(sample_ps));
-
 
 weight_max_freqs= [];
 max_freqs = [];
@@ -56,7 +52,7 @@ for sample_p = sample_ps
     
     plot(fax_Hz(1:N_2), X_mags_sm,'-','Color', fcmap(sample_i,:))
     colorbar
-    caxis(([min(sample_ps) max(sample_ps)]))
+    %caxis(([min(sample_ps) max(sample_ps)]))
     
     xlabel('Frequency, Hz')
     ylabel('Magnitude, a.u.');

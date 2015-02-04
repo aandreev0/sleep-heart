@@ -56,16 +56,20 @@ for time_i = 1:length(time_points)
     toc
     
     % extract intensity from picked hearts ROIs
-    for j = 0:burst_size-1
+    filename = ['img_', sprintf('%09d', time_id) ,'_Default_', '000.tif'];
+    prev_img_in_burst = imread([folder_name, filename]);
+    
+    for j = 1:burst_size-1
         filename = ['img_', sprintf('%09d', time_id) ,'_Default_', sprintf('%03d', j) ,'.tif'];
         img = imread([folder_name, filename]);
         for f = 1:n_fish
             xy = [heart_coordinates(f, 2), heart_coordinates(f, 1)];
-            timelapse_data((time_i-1)*burst_size+j+1, f) = get_avg_signal(xy, img, radius);
+            timelapse_data((time_i-1)*burst_size+j+1, f) = get_avg_signal(xy, img-prev_img_in_burst, radius);
         end
         if rand > 0.9995
             toc
         end
+        prev_img_in_burst = img;
     end % for j = 1:burst_size-1
     save([ws_file_name,'_',datestr(clock,30),'.mat'])
     toc
