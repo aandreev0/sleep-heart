@@ -1,6 +1,6 @@
 % build trace from first to last image
 
-time_points = 0:5:273; % filenames: 0:(tn-1)
+time_points = 0:20:433; % filenames: 0:(tn-1)
 radius = 20;
 ref_positions1 = []; % [x0 y0;x1 y1...]
 ref_positions2 = []; % [x0 y0;x1 y1...]
@@ -23,7 +23,7 @@ for i = 1:length(time_points)
         img(x, y) = 0;
     end
     %imshow(img(vis_rangex,vis_rangey))
-    imshow(img)
+    imshow(img,  [0 100])
     xy = round(ginput(1));
     ref_positions1 = [ref_positions1; xy];
     %xy = ginput(1);

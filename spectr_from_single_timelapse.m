@@ -29,7 +29,7 @@ for sample_p = sample_ps
    
     % building spectra
     
-    figure(2);
+    figure(33);
     %clf
 
     signal = data(:,:);
@@ -48,9 +48,9 @@ for sample_p = sample_ps
 
     X_mags = X_mags(1:N_2, 1:samples_n);
 
-    X_mags_sm(:, 1) = smooth(fax_Hz(1:N_2), X_mags(:), 11);    
+    X_mags_sm = smooth(fax_Hz(1:N_2), X_mags, 11);    
     
-    plot(fax_Hz(1:N_2), X_mags_sm,'-','Color', fcmap(sample_i,:))
+    plot(fax_Hz(1:N_2), X_mags_sm,'-r')
     colorbar
     %caxis(([min(sample_ps) max(sample_ps)]))
     

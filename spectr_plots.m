@@ -2,7 +2,7 @@
 
 sample_i = 0;
 sample_ps = 1:length(time_points);%0:10:273+1; % should be subset of (time_points+1)
-time_step = 4; % min
+time_step = 1; % min
 fps_per_time = 10;%ones(size(sample_ps))*10; % fps
 
 intensity_raw = [intensity; intensity(end)];
@@ -56,9 +56,10 @@ for sample_p = sample_ps % number of time points
 
 end
 h = figure
-surf(time_points*4, fax_Hz(1:N_2), plot3d_spectra)
+%plot(fax_Hz(1:N_2), plot3d_spectra)
+surf(time_points, fax_Hz(1:N_2), plot3d_spectra)
 view(2)
 shading('flat')
 
-%saveas(h,[datestr(clock,30),'_',sprintf('%0.9g',1000000000*rand()),'.fig'])
+%saveas(h,['../', datestr(clock,30),'_',sprintf('%09d', k),'.fig'])
 

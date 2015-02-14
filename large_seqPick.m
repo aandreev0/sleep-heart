@@ -2,17 +2,30 @@
 %save workspace here:
 ws_file_name = 'SecondDay_3Fish_10Tstep';
 
-n_fish = 6;
+n_fish = 16;
 fps = 10;
-radius = 8; % ROI heart radius
+radius = 10; % ROI heart radius
 cmap = jet;
-folder_name = '../Pos0/';
+folder_name = '../../timelapse-2min_int_600framesBurst_1/Pos0/';
 %time_points = (0:20); % physical file behind that
 burst_size = 600;
 % file names: img_(time)_Default_(3, burst_position).tif
 cc = [1 0 0];
 timelapse_data = zeros(length(time_points)*burst_size, n_fish);
-heart_coordinates = [];
+%heart_coordinates = [];
+
+
+
+%register optimizer
+[optimizer, metric] = imregconfig('multimodal');
+optimizer.InitialRadius = 0.001;
+optimizer.Epsilon = 1e-4;
+optimizer.GrowthFactor = 1.02;
+optimizer.MaximumIterations = 300;
+
+
+filename = ['img_', sprintf('%09d', 0) ,'_Default_', '000.tif'];
+first_t_img = imread([folder_name, filename]);
 
 for time_i = 1:length(time_points)
     tic
@@ -21,8 +34,15 @@ for time_i = 1:length(time_points)
     time_id = time_points(time_i);
     filename = ['img_', sprintf('%09d', time_id) ,'_Default_', sprintf('%03d', 0) ,'.tif'];
     img = imread([folder_name, filename]);
-    img_m = img;
     toc
+    %register and store tform
+    tic
+    'registering...'
+    toc
+    %
+    
+    img_m = img;
+    
     
     if time_i==1
         c = 'Yes';
@@ -34,8 +54,10 @@ for time_i = 1:length(time_points)
     
     switch c
         case 'Yes'
+            %{
             heart_coordinates = [];
-            imshow(img_m);
+
+            imshow(img_m, [0 30]);
             for f = 1:n_fish
                 
                 ['Defining heart coords for fish ', int2str(f),'/',int2str(n_fish),'...']
@@ -43,34 +65,45 @@ for time_i = 1:length(time_points)
                 ['Defined']
                 xy = ceil(xy);
                 heart_coordinates = [heart_coordinates; xy];
-                
-                %timelapse_data(time_i*burst_size+1, f) = get_avg_signal(xy, img, radius);
             end
             close all
             pause(1)
+            %}
         case 'Auto'
+            %{
             for f = 1:n_fish
-                heart_coordinates(f,:) = heart_coordinates(f,:) + ref_positions1(time_i,:);
+                heart_coordinates(f,:) = heart_coordinates(f,:);% + ref_positions1(time_i,:);
             end
+%}
     end
     toc
     
     % extract intensity from picked hearts ROIs
-    filename = ['img_', sprintf('%09d', time_id) ,'_Default_', '000.tif'];
-    prev_img_in_burst = imread([folder_name, filename]);
+    tform = imregtform(img, first_t_img, 'rigid', optimizer, metric);
+    img = imwarp(img, tform,'OutputView',imref2d(size(first_t_img)));
     
-    for j = 1:burst_size-1
+    for j = 0:burst_size-1
         filename = ['img_', sprintf('%09d', time_id) ,'_Default_', sprintf('%03d', j) ,'.tif'];
         img = imread([folder_name, filename]);
+        img = imwarp(img, tform, 'OutputView',imref2d(size(first_t_img)));
+
+        
         for f = 1:n_fish
             xy = [heart_coordinates(f, 2), heart_coordinates(f, 1)];
-            timelapse_data((time_i-1)*burst_size+j+1, f) = get_avg_signal(xy, img-prev_img_in_burst, radius);
+            timelapse_data((time_i-1)*burst_size+j+1, f) = get_avg_signal(xy, img, radius);
         end
-        if rand > 0.9995
-            toc
-        end
-        prev_img_in_burst = img;
+        
+        
     end % for j = 1:burst_size-1
-    save([ws_file_name,'_',datestr(clock,30),'.mat'])
+    if rand>0.9
+        save(['logs/',ws_file_name,'_',datestr(clock,30),'.mat'])
+    end
+    %prev_t_img = img;
     toc
+    
+
+
 end % for time_i = time_points
+
+
+  save(['logs/',ws_file_name,'_',datestr(clock,30),'.mat'])
