@@ -55,7 +55,7 @@ for sample_p = sample_ps % number of time points
     
 
 end
-h = figure
+h = figure;
 %plot(fax_Hz(1:N_2), plot3d_spectra)
 surf(time_points, fax_Hz(1:N_2), plot3d_spectra)
 view(2)
