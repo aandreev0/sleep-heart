@@ -1,7 +1,7 @@
 
 % start program with getting reference image (very first one) and pick hearts
-dir = '../../realtimeTest/test_1/Pos0/';
-n_fish = 18;
+dir = '../../timelapse-2min_int_600framesBurst_1/Pos0/';
+n_fish = 16;
 
 heart_coordinates = [];
 
@@ -38,8 +38,9 @@ while true
 	burst_end_filename = ['img_', sprintf('%09d', curr_time_point) ,'_Default_', sprintf('%03d', burst_size-1) ,'.tif'];
 	if exist([dir, burst_end_filename]) > 0
         'New burst detected!'
+        curr_time_point
         % cycle throught all images to get timelapses
-        
+        tic
         for j=0:burst_size-1
             filename = ['img_', sprintf('%09d', curr_time_point) ,'_Default_', sprintf('%03d', j) ,'.tif'];
             img = imread([dir, filename]);
@@ -61,13 +62,17 @@ while true
         
         'extracted heart beats'
         
+        time_points = 0:curr_time_point;
         curr_time_point = curr_time_point + 1;
         if exist([dir, 'saves/'], 'dir')==0
             mkdir(dir, 'saves');
         end
         save([dir, 'saves/','RTAnalysis_',datestr(clock,30),'.mat']); % save workspace
         'Going to sleep'
+        toc
         pause(scan_delay); %sleep for a while 
+        close all
+        
 	end
         % optionally delete all files with time <= curr_time_point
 end
