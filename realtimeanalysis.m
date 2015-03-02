@@ -5,9 +5,20 @@ n_fish = 16;
 
 heart_coordinates = [];
 
+
 ref_image_name = ['img_', sprintf('%09d', 0) ,'_Default_', sprintf('%03d', 0) ,'.tif'];
 ref_img = imread([dir, ref_image_name]);
-imshow(ref_img, [0 30]); % some sort of auto adjust is important
+s = size(ref_img);
+ref_img_std = zeros(s(1),s(2), 300);
+for k = 1:(300-1)
+    im_name = ['img_', sprintf('%09d', 0) ,'_Default_', sprintf('%03d', k) ,'.tif'];
+    im = imread([dir, im_name]);
+    ref_img_std(:,:,k+1) = im;
+end
+ref_img_std = std(ref_img_std,0,3);
+imshow(ref_img_std, [0 1]); % some sort of auto adjust is important
+
+
 for f = 1:n_fish
     ['Defining heart coords for fish ', int2str(f),'/',int2str(n_fish),'...']
     xy = ginput(1);

@@ -3,7 +3,7 @@
 sample_i = 0;
 sample_ps = 1:length(time_points);%0:10:273+1; % should be subset of (time_points+1)
 time_step = 1; % min
-fps_per_time = 10;%ones(size(sample_ps))*10; % fps
+fps_per_time = fps;%ones(size(sample_ps))*10; % fps
 
 intensity_raw = [intensity; intensity(end)];
 
