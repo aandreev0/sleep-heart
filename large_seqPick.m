@@ -41,41 +41,7 @@ for time_i = 1:length(time_points)
     toc
     %
     
-    img_m = img;
     
-    
-    if time_i==1
-        c = 'Yes';
-    else
-        c = 'Auto';%questdlg('Refine heart positions?', 'Q', 'Yes', 'No','Yes');
-    end
-    
-    
-    
-    switch c
-        case 'Yes'
-            %{
-            heart_coordinates = [];
-
-            imshow(img_m, [0 30]);
-            for f = 1:n_fish
-                
-                ['Defining heart coords for fish ', int2str(f),'/',int2str(n_fish),'...']
-                xy = ginput(1);
-                ['Defined']
-                xy = ceil(xy);
-                heart_coordinates = [heart_coordinates; xy];
-            end
-            close all
-            pause(1)
-            %}
-        case 'Auto'
-            %{
-            for f = 1:n_fish
-                heart_coordinates(f,:) = heart_coordinates(f,:);% + ref_positions1(time_i,:);
-            end
-%}
-    end
     toc
     
     % extract intensity from picked hearts ROIs

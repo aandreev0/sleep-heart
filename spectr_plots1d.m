@@ -32,7 +32,7 @@ clf
 diffs3d = diff(mfreqs,1,2);
 %diffs3d(diffs3d>0) = 1;
 %diffs3d(diffs3d<0) = -1;
-surf(1:423, 1:16, diffs3d)
+%surf(1:423, 1:16, diffs3d)
 colormap(cm1);
 view(2)
 shading flat
